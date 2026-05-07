@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BookVerse – Bìa sách chính xác | Đặt hàng qua Google Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Inter', sans-serif;
+        }
+        body {
+            background: #faf9f8;
+            color: #1e1e2a;
+            line-height: 1.5;
+        }
+        .hero {
+            background: linear-gradient(120deg, #1a2a3a, #0f1a24);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-top: 0.75rem;
+            opacity: 0.9;
+        }
+        .btn-outline-light {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.6rem;
+            border: 2px solid #ffb347;
+            border-radius: 40px;
+            color: #ffb347;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-outline-light:hover {
+            background: #ffb347;
+            color: #1e2a32;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .cat-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        .cat-btn.active {
+            background: #2d3748;
+            color: white;
+        }
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .book-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: 0.25s;
+        }
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+        }
+        .book-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            background: #e9eef3;
+        }
+        .book-info {
+            padding: 1.2rem;
+        }
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .book-author {
+            font-size: 0.8rem;
+            color: #5b6e8c;
+            margin: 0.25rem 0;
+        }
+        .book-price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #c2410c;
+            margin: 0.5rem 0;
+        }
+        .book-category {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .badge-hot {
+            background: #fecaca;
+            color: #b91c1c;
+            margin-left: 0.5rem;
+        }
+        .order-wrapper {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+        }
+        .order-wrapper h2 {
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        .form-embed iframe {
+            width: 100%;
+            min-height: 600px;
+            border: none;
+            border-radius: 1rem;
+        }
+        .footer {
+            background: #0f172a;
+            color: #cbd5e6;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            max-width: 550px;
+            width: 90%;
+            border-radius: 2rem;
+            padding: 1.8rem;
+            position: relative;
+            animation: fadeInUp 0.2s ease;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .modal-close {
+            position: absolute;
+            right: 1.2rem;
+            top: 1rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: bold;
+            color: #5b6e8c;
+        }
+        .modal-close:hover {
+            color: #c2410c;
+        }
+        .modal-img {
+            width: 120px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-right: 1rem;
+            float: left;
+            shape-outside: margin-box;
+        }
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .modal-author {
+            color: #5b6e8c;
+            margin-bottom: 0.5rem;
+        }
+        .modal-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #c2410c;
+            margin: 0.5rem 0;
+        }
+        .modal-summary {
+            margin: 1rem 0;
+            line-height: 1.5;
+            clear: both;
+        }
+        .btn-order {
+            background: #c2410c;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .btn-order:hover {
+            background: #9a3412;
+        }
+        @media (max-width: 600px) {
+            .modal-img {
+                width: 100%;
+                height: auto;
+                float: none;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="hero">
+    <h1>📖 BookVerse</h1>
+    <p>Tri thức – Giải trí – Khai phóng<br>Sách bản quyền, giao toàn quốc</p>
+    <a href="#dat-hang" class="btn-outline-light">✨ Đặt hàng ngay ✨</a>
+</div>
+<div class="container">
+    <div class="category-tabs" id="categoryFilter">
+        <button class="cat-btn active" data-cat="all">📚 Tất cả</button>
+        <button class="cat-btn" data-cat="tamly">🧠 Tâm lý – Kỹ năng</button>
+        <button class="cat-btn" data-cat="trinhtham">🕵️ Trinh thám</button>
+        <button class="cat-btn" data-cat="vientuong">🚀 Viễn tưởng</button>
+        <button class="cat-btn" data-cat="khoahoc">🔬 Khoa học</button>
+        <button class="cat-btn" data-cat="truyentranh">🎨 Truyện tranh</button>
+        <button class="cat-btn" data-cat="vanhoc">🌸 Văn học – Lãng mạn</button>
+    </div>
+    <div class="books-grid" id="booksContainer"></div>
+    <div class="order-wrapper" id="dat-hang">
+        <h2>📦 Đặt mua sách</h2>
+        <p>Điền thông tin bên dưới – Chúng tôi sẽ xác nhận đơn hàng qua email & điện thoại</p>
+        <div class="form-embed">
+            <!-- Google Form chính xác của bạn -->
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHQF5szrYNcWvuW8xhgmVkuxRAJW58avBkq9rype5zNcVKtA/viewform?embedded=true" width="100%" height="1049" frameborder="0">Đang tải…</iframe>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>© 2025 BookVerse – Nhà sách trực tuyến. Đơn hàng được lưu vào Google Sheet & email thông báo.</p>
+    <p>📧 Hỗ trợ: 2311090023@studenthuph.edu.vn</p>
+</div>
+
+<!-- Modal -->
+<div id="bookModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+        <img id="modalImg" class="modal-img" src="" alt="Bìa sách">
+        <div>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <div id="modalAuthor" class="modal-author"></div>
+            <div id="modalPrice" class="modal-price"></div>
+        </div>
+        <div id="modalSummary" class="modal-summary"></div>
+        <button id="orderFromModalBtn" class="btn-order">📖 Đặt mua ngay</button>
+    </div>
+</div>
+
+<script>
+    // Dữ liệu sách với ẢNH BÌA ĐÃ ĐƯỢC THAY THẾ BẰNG LINK BẠN CUNG CẤP
+    const booksData = [
+        { 
+            title: "Đắc Nhân Tâm", author: "Dale Carnegie", price: "89.000đ", category: "tamly",
+            img: "https://static.oreka.vn/800-800_167db961-4796-4d86-bcf0-be10f5747c57",
+            summary: "Cuốn sách kinh điển về nghệ thuật giao tiếp và ứng xử. Dale Carnegie chỉ ra cách làm cho người khác cảm thấy quan trọng, cách gây ảnh hưởng và kết bạn. Đây là bí quyết thành công trong công việc và cuộc sống."
+        },
+        { 
+            title: "Nhà giả kim", author: "Paulo Coelho", price: "95.000đ", category: "vanhoc",
+            img: "https://bizweb.dktcdn.net/thumb/grande/100/363/455/products/nhagiakimnew03-e44cc6d6-6dad-4377-9d4d-744142f4f4ca.jpg?v=1768805136420",
+            summary: "Hành trình của chàng trai Santiago đi tìm kho báu và khám phá ra rằng 'khi bạn thực sự muốn điều gì, cả vũ trụ sẽ hợp sức giúp bạn đạt được điều đó'. Câu chuyện đầy chất thơ và triết lý sâu sắc."
+        },
+        { 
+            title: "Sherlock Holmes: Án mạng Baskervilles", author: "Arthur Conan Doyle", price: "120.000đ", category: "trinhtham",
+            img: "https://bloganchoi.com/wp-content/uploads/2026/01/vu-an-1.jpg",
+            summary: "Một trong những vụ án nổi tiếng nhất của thám tử Sherlock Holmes. Lời nguyền về con chó ma quái trên vùng đầm lầy Baskerville khiến gia đình Baskerville lần lượt qua đời. Liệu Holmes có phá được vụ án kỳ bí này?"
+        },
+        { 
+            title: "Dune", author: "Frank Herbert", price: "180.000đ", category: "vientuong",
+            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy3I0OQ4fLwcayfdGElakkwFHyPeRRdm6VzA&s",
+            summary: "Kiệt tác khoa học viễn tưởng từng đoạt giải Hugo và Nebula. Câu chuyện về sa mạc Arrakis – nơi có 'gia vị' quý giá nhất vũ trụ. Paul Atreides trở thành lãnh tụ của người Fremen và thay đổi số phận thiên hà."
+        },
+        { 
+            title: "Vũ trụ trong vỏ hạt dẻ", author: "Stephen Hawking", price: "150.000đ", category: "khoahoc",
+            img: "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_26112017_041133.jpg",
+            summary: "Stephen Hawking giải thích những lý thuyết phức tạp về vũ trụ, lỗ đen, thuyết M và đa vũ trụ một cách dễ hiểu. Sách có nhiều hình ảnh minh họa sống động, phù hợp cho người yêu khoa học."
+        },
+        { 
+            title: "One Piece Tập 1", author: "Eiichiro Oda", price: "35.000đ", category: "truyentranh",
+            img: "https://m.media-amazon.com/images/M/MV5BMTNjNGU4NTUtYmVjMy00YjRiLTkxMWUtNzZkMDNiYjZhNmViXkEyXkFqcGc@._V1_.jpg",
+            summary: "Monkey D. Luffy, cậu bé có cơ thể cao su, bắt đầu hành trình trở thành Vua Hải Tặc. Anh tập hợp những người bạn đồng hành cùng săn tìm kho báu One Piece huyền thoại. Tập mở đầu đầy hài hước và phiêu lưu."
+        },
+        { 
+            title: "Sức mạnh của thói quen", author: "Charles Duhigg", price: "109.000đ", category: "tamly",
+            img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/197/269/products/z4105964911654-5e5a35259898ca70607286170319aa65.jpg?v=1676275362800",
+            summary: "Khám phá cấu trúc của thói quen: tín hiệu – hành động – phần thưởng. Charles Duhigg chỉ ra cách thay đổi thói quen xấu và xây dựng thói quen tốt, áp dụng cho cá nhân và tổ chức."
+        },
+        { 
+            title: "Án mạng trên sông Nile", author: "Agatha Christie", price: "98.000đ", category: "trinhtham",
+            img: "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_06352021_113536.jpg",
+            summary: "Vụ án xảy ra trên du thuyền giữa dòng sông Nile. Nữ thừa kế giàu có bị sát hại trong tuần trăng mật. Thám tử Hercule Poirot phải tìm ra kẻ thủ ác trong số những hành khách bí ẩn. Cú twist bất ngờ."
+        },
+        { 
+            title: "1984", author: "George Orwell", price: "112.000đ", category: "vientuong",
+            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCgKeYxkFj9et1G1ldGmuLDbvBZ5KK0mlMQ&s",
+            summary: "Tiểu thuyết phản địa đàng về chế độ toàn trị. Big Brother luôn theo dõi mọi hành động, ngôn ngữ bị bóp méo, tư tưởng bị kiểm soát. Winston Smith cố gắng nổi loạn nhưng phải trả giá đắt."
+        },
+        { 
+            title: "Tư duy nhanh và chậm", author: "Daniel Kahneman", price: "142.000đ", category: "khoahoc",
+            img: "https://static.oreka.vn/800-800_6754d9d9-3a0a-46e8-9493-43c71e0c9486",
+            summary: "Daniel Kahneman, người đoạt giải Nobel, giải thích hai hệ thống tư duy: Hệ thống 1 (nhanh, trực giác) và Hệ thống 2 (chậm, lý trí). Sách chỉ ra những sai lầm phổ biến trong ra quyết định."
+        },
+        { 
+            title: "Death Note Tập 1", author: "Tsugumi Ohba", price: "40.000đ", category: "truyentranh",
+            img: "https://product.hstatic.net/200000287623/product/deathnote-1_bac1cafaa8e74352b4fec0de4832b0e4.jpg",
+            summary: "Học sinh thông minh Light Yagami nhặt được cuốn sổ Death Note có khả năng giết chết bất kỳ ai khi viết tên. Cậu quyết định trở thành 'thần' thanh lọc thế giới, nhưng phải đối đầu với thám tử thiên tài L."
+        },
+        { 
+            title: "Cây cam ngọt của tôi", author: "José Mauro de Vasconcelos", price: "86.000đ", category: "vanhoc",
+            img: "https://static.oreka.vn/800-800_9479591a-d8e5-4b46-a7b0-e6442a07fd2f",
+            summary: "Câu chuyện cảm động về cậu bé Zezé, nghịch ngợm nhưng giàu tình cảm. Cậu kết bạn với một cây cam nhỏ biết nói. Tác phẩm khắc họa tuổi thơ nghèo khổ, tình yêu thương và nỗi đau trưởng thành."
+        }
+    ];
+
+    const container = document.getElementById('booksContainer');
+    function getCategoryName(cat) {
+        const map = { tamly:"Tâm lý", trinhtham:"Trinh thám", vientuong:"Viễn tưởng", khoahoc:"Khoa học", truyentranh:"Truyện tranh", vanhoc:"Văn học" };
+        return map[cat];
+    }
+
+    function renderBooks(filterCat = 'all') {
+        let filtered = filterCat === 'all' ? booksData : booksData.filter(b => b.category === filterCat);
+        if(filtered.length === 0) {
+            container.innerHTML = `<div style="text-align:center; grid-column:1/-1; padding:3rem;">✨ Không có sách, chọn thể loại khác ✨</div>`;
+            return;
+        }
+        container.innerHTML = filtered.map((book, idx) => `
+            <div class="book-card" data-title="${book.title.replace(/"/g, '&quot;')}">
+                <img class="book-img" src="${book.img}" alt="${book.title}" loading="lazy" onerror="this.src='https://picsum.photos/id/${idx+10}/300/260'; this.onerror=null;">
+                <div class="book-info">
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">${book.author}</div>
+                    <div class="book-price">${book.price}</div>
+                    <span class="book-category">📖 ${getCategoryName(book.category)}</span>
+                    ${book.category === 'tamly' || book.category === 'trinhtham' ? '<span class="book-category badge-hot">🔥 Bán chạy</span>' : ''}
+                </div>
+            </div>
+        `).join('');
+
+        // Gắn sự kiện click cho từng thẻ sách
+        document.querySelectorAll('.book-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.getAttribute('data-title');
+                const book = booksData.find(b => b.title === title);
+                if (book) showModal(book);
+            });
+        });
+    }
+
+    // Hiển thị modal với thông tin sách
+    function showModal(book) {
+        document.getElementById('modalImg').src = book.img;
+        document.getElementById('modalTitle').innerText = book.title;
+        document.getElementById('modalAuthor').innerText = book.author;
+        document.getElementById('modalPrice').innerText = book.price;
+        document.getElementById('modalSummary').innerHTML = `<strong>📖 Tóm tắt:</strong> ${book.summary}`;
+        document.getElementById('bookModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+    }
+
+    function orderFromModal() {
+        closeModal();
+        const orderSection = document.getElementById('dat-hang');
+        if (orderSection) orderSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Lọc theo thể loại
+    const btns = document.querySelectorAll('.cat-btn');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const cat = btn.dataset.cat;
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderBooks(cat);
+        });
+    });
+
+    // Sự kiện modal close
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('orderFromModalBtn').addEventListener('click', orderFromModal);
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('bookModal');
+        if (e.target === modal) closeModal();
+    });
+
+    // Khởi tạo
+    renderBooks('all');
+</script>
+</body>
+</html>
