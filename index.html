@@ -1,793 +1,819 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>BookVerse – Nhà sách trực tuyến</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>BookVerse – Nhà sách trực tuyến</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: #f9fafb;
-            color: #1f2937;
-            line-height: 1.5;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fc;
+      color: #1e2a3a;
+      line-height: 1.5;
+    }
 
-        /* Header & Navigation – Xanh dương + nâu */
-        .header {
-            background: #0f2b3d;
-            color: #f5f0e6;
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-bottom: 2px solid #a55728;
-        }
-        .logo h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #e6c8a0, #c08141);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .logo p {
-            font-size: 0.75rem;
-            color: #d4cfc4;
-        }
-        .search-bar {
-            flex: 1;
-            max-width: 320px;
-            display: flex;
-            gap: 0.5rem;
-        }
-        .search-bar input {
-            width: 100%;
-            padding: 0.6rem 1.2rem;
-            border-radius: 60px;
-            border: 1px solid #3d5a6c;
-            outline: none;
-            font-size: 0.9rem;
-            background: #fefcf8;
-            color: #1f2e3a;
-        }
-        .search-bar input:focus {
-            border-color: #c08141;
-            box-shadow: 0 0 0 2px rgba(192, 129, 65, 0.2);
-        }
-        .search-bar button {
-            background: #a55728;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-            cursor: pointer;
-            font-weight: 600;
-            color: white;
-            transition: 0.2s;
-        }
-        .search-bar button:hover {
-            background: #c08141;
-        }
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 1.4rem;
-            background: #1e4a6e;
-            padding: 0.5rem 0.9rem;
-            border-radius: 60px;
-            transition: 0.2s;
-            color: #f5f0e6;
-        }
-        .cart-icon:hover {
-            background: #a55728;
-            color: white;
-        }
-        .cart-count {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #ef4444;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 0.2rem 0.45rem;
-            border-radius: 30px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        .nav-links a {
-            color: #f5f0e6;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-            transition: 0.2s;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            border-bottom-color: #e6c8a0;
-            color: #ffd9a5;
-        }
-        .btn-order-nav {
-            background: #a55728;
-            color: white !important;
-            padding: 0.5rem 1.2rem !important;
-            border-radius: 60px;
-            border-bottom: none !important;
-            font-weight: 600;
-        }
-        .btn-order-nav:hover {
-            background: #c08141;
-        }
+    /* Màu chủ đạo xanh dương + nâu */
+    :root {
+      --blue-dark: #1e4a76;
+      --blue-light: #eef5ff;
+      --brown: #8b5e3c;
+      --brown-light: #f7efe5;
+      --gray-bg: #f8fafc;
+      --white: #ffffff;
+      --shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+      --radius: 1.25rem;
+    }
 
-        /* Hero – xanh dương nhạt + nâu ấm */
-        .hero {
-            background: linear-gradient(135deg, #eef2f5 0%, #e6d8ca 100%);
-            color: #2c3e4e;
-            padding: 3rem 1.5rem;
-            text-align: center;
-            border-bottom: 1px solid #cfb28b;
-        }
-        .hero h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #2c553c;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            margin-top: 0.75rem;
-            color: #5a3e2b;
-        }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-        .container {
-            max-width: 1300px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
+    /* Header */
+    .header {
+      background: var(--white);
+      border-bottom: 2px solid var(--brown);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
 
-        /* Category tabs – xanh dương nhạt + nâu border */
-        .category-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.6rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e0cfbc;
-        }
-        .cat-btn {
-            background: #f4f1ea;
-            border: 1px solid #d8c8b4;
-            padding: 0.45rem 1.2rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 60px;
-            cursor: pointer;
-            color: #375a6e;
-            transition: 0.2s;
-        }
-        .cat-btn.active {
-            background: #1e4a6e;
-            border-color: #1e4a6e;
-            color: white;
-        }
-        .cat-btn:hover:not(.active) {
-            background: #e2cfbc;
-            border-color: #a55728;
-        }
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.8rem 0;
+    }
 
-        /* Books grid – thẻ sách trắng, bóng nhẹ */
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .book-card {
-            background: white;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            transition: 0.25s;
-            border: 1px solid #ece1d2;
-        }
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -12px rgba(45, 55, 68, 0.15);
-            border-color: #c08141;
-        }
-        .book-img {
-            width: 100%;
-            height: 270px;
-            object-fit: cover;
-            cursor: pointer;
-            background: #f3ede5;
-        }
-        .book-info {
-            padding: 1.2rem;
-        }
-        .book-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            color: #1e3a5f;
-        }
-        .book-author {
-            font-size: 0.8rem;
-            color: #7a5a46;
-            margin: 0.25rem 0;
-        }
-        .book-price {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: #a55728;
-            margin: 0.5rem 0;
-        }
-        .add-to-cart {
-            background: #1e4a6e;
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 0.5rem;
-            transition: 0.2s;
-            color: white;
-        }
-        .add-to-cart:hover {
-            background: #a55728;
-        }
-        .book-category {
-            display: inline-block;
-            background: #f1eadf;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #5c4432;
-        }
-        .badge-hot {
-            background: #ffede3;
-            color: #b45309;
-            margin-left: 0.5rem;
-        }
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--blue-dark), var(--brown));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-        /* Order page (Google Form) */
-        .order-page {
-            display: none;
-            background: white;
-            border-radius: 2rem;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2d5c6;
-        }
-        .order-page h2 {
-            font-size: 1.8rem;
-            text-align: center;
-            color: #a55728;
-        }
-        .order-page p {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: #4c6a7c;
-        }
-        .form-embed iframe {
-            width: 100%;
-            min-height: 800px;
-            border: none;
-            border-radius: 1rem;
-        }
+    .logo p {
+      font-size: 0.75rem;
+      color: #5b6e8c;
+    }
 
-        /* Footer – xanh dương đậm, chữ sáng */
-        .footer {
-            background: #0f2b3d;
-            color: #d9cfbd;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
-            border-top: 2px solid #a55728;
-            font-size: 0.85rem;
-        }
+    .search-box {
+      flex: 1;
+      max-width: 380px;
+      display: flex;
+      border: 1px solid #cbd5e1;
+      border-radius: 60px;
+      background: var(--white);
+      overflow: hidden;
+    }
 
-        /* Giỏ hàng modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
-            z-index: 1001;
-            justify-content: center;
-            align-items: center;
-        }
-        .cart-content {
-            background: white;
-            width: 90%;
-            max-width: 650px;
-            border-radius: 2rem;
-            padding: 1.8rem;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
-            border-top: 5px solid #a55728;
-        }
-        .cart-content h2 {
-            margin-bottom: 1rem;
-            color: #1e4a6e;
-        }
-        .cart-item {
-            display: flex;
-            gap: 1rem;
-            border-bottom: 1px solid #e2cfbc;
-            padding: 1rem 0;
-            align-items: center;
-        }
-        .cart-item-img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 0.8rem;
-        }
-        .cart-item-info {
-            flex: 1;
-        }
-        .cart-item-title {
-            font-weight: 700;
-        }
-        .cart-item-price {
-            color: #a55728;
-            font-weight: 500;
-        }
-        .cart-item-quantity {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .cart-item-quantity button {
-            background: #e2e8f0;
-            border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .cart-item-remove {
-            background: #ffede3;
-            color: #b45309;
-            border: none;
-            padding: 0.3rem 0.9rem;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-        .cart-total {
-            text-align: right;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin: 1rem 0;
-            color: #1e3a5f;
-        }
-        .cart-actions {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        .cart-actions button {
-            padding: 0.7rem 1.2rem;
-            border-radius: 60px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-checkout {
-            background: #a55728;
-            color: white;
-        }
-        .btn-checkout:hover {
-            background: #c08141;
-        }
-        .btn-close-cart {
-            background: #e2cfbc;
-            color: #3a5e74;
-        }
+    .search-box input {
+      flex: 1;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      outline: none;
+      font-size: 0.9rem;
+    }
 
-        /* Modal chi tiết sách */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            max-width: 550px;
-            width: 90%;
-            border-radius: 2rem;
-            padding: 1.8rem;
-            position: relative;
-            max-height: 85vh;
-            overflow-y: auto;
-            border-top: 6px solid #a55728;
-        }
-        .modal-close {
-            position: absolute;
-            right: 1.2rem;
-            top: 1rem;
-            font-size: 1.6rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: #8c6f54;
-        }
-        .modal-img {
-            width: 120px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 1rem;
-            margin-right: 1rem;
-            float: left;
-        }
-        .modal-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #1e4a6e;
-        }
-        .modal-summary {
-            margin: 1rem 0;
-            clear: both;
-            line-height: 1.5;
-        }
-        .btn-order-modal {
-            background: #1e4a6e;
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 60px;
-            width: 100%;
-            margin-top: 1rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-order-modal:hover {
-            background: #a55728;
-        }
-        @media (max-width: 700px) {
-            .header { flex-direction: column; align-items: stretch; text-align: center; }
-            .search-bar { max-width: 100%; }
-            .cart-icon { align-self: flex-end; }
-        }
-    </style>
+    .search-box button {
+      background: var(--blue-dark);
+      border: none;
+      padding: 0 1.2rem;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .search-box button:hover {
+      background: var(--brown);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #1e2a3a;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      border-bottom-color: var(--brown);
+      color: var(--blue-dark);
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: var(--blue-light);
+      padding: 0.4rem 0.9rem;
+      border-radius: 40px;
+      transition: 0.2s;
+    }
+
+    .cart-icon:hover {
+      background: var(--brown);
+      color: white;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #dc2626;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 0.2rem 0.45rem;
+      border-radius: 30px;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(105deg, var(--blue-light) 0%, var(--brown-light) 100%);
+      padding: 3rem 0;
+      border-bottom: 1px solid #e2d5c0;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #2c3e50;
+      margin: 1rem 0;
+    }
+
+    .btn-cta {
+      background: var(--brown);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-cta:hover {
+      background: #6b4226;
+    }
+
+    /* Section sách */
+    .section {
+      padding: 3rem 0;
+    }
+
+    .section-header h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin-bottom: 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 1rem 0 2rem;
+    }
+
+    .tab-btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--blue-dark);
+      color: white;
+      border-color: var(--blue-dark);
+    }
+
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .book-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: 0.25s;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--brown);
+    }
+
+    .book-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+    }
+
+    .book-info {
+      padding: 1rem 1.2rem 1.2rem;
+    }
+
+    .book-category {
+      display: inline-block;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      margin-bottom: 0.5rem;
+    }
+
+    .book-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .book-author {
+      font-size: 0.8rem;
+      color: #5b6e8c;
+    }
+
+    .book-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--brown);
+      margin: 0.5rem 0;
+    }
+
+    .add-cart-btn {
+      background: var(--blue-dark);
+      border: none;
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .add-cart-btn:hover {
+      background: var(--brown);
+    }
+
+    /* Order page (Google Form) */
+    .order-page {
+      display: none;
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: var(--shadow);
+    }
+
+    .order-page h2 {
+      color: var(--blue-dark);
+      text-align: center;
+    }
+
+    .order-page iframe {
+      width: 100%;
+      min-height: 750px;
+      border: none;
+      border-radius: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* Modal giỏ hàng */
+    .modal-cart {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cart-modal-content {
+      background: white;
+      max-width: 600px;
+      width: 90%;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 0;
+    }
+
+    .cart-item-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 700;
+    }
+
+    .cart-item-price {
+      color: var(--brown);
+    }
+
+    .cart-qty {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .cart-qty button {
+      background: #e2e8f0;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cart-total {
+      text-align: right;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+
+    .cart-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .btn-checkout {
+      background: var(--brown);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-close-cart {
+      background: #e2e8f0;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+
+    /* Modal chi tiết sách */
+    .modal-detail {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1001;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .detail-content {
+      background: white;
+      max-width: 550px;
+      width: 90%;
+      border-radius: 1.8rem;
+      padding: 1.8rem;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 1rem;
+      top: 0.8rem;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .detail-img {
+      width: 120px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 1rem;
+      float: left;
+      margin-right: 1rem;
+    }
+
+    .footer {
+      background: #1e2a3a;
+      color: #cbd5e6;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 800px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .header-inner {
+        flex-direction: column;
+      }
+      .search-box {
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <div class="header">
+  <div class="container header-inner">
     <div class="logo">
-        <h1>📖 BookVerse</h1>
-        <p>Sách chính hãng - Giao toàn quốc</p>
+      <h1>📖 BookVerse</h1>
+      <p>Xanh & Nâu – Tri thức bền vững</p>
     </div>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Tìm theo tên hoặc tác giả...">
-        <button id="searchBtn">🔍 Tìm</button>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Tìm theo tên hoặc tác giả...">
+      <button id="searchBtn">🔍 Tìm</button>
     </div>
     <div class="nav-links">
-        <a href="#" class="nav-home active">Trang chủ</a>
-        <a href="#" class="nav-order">Đặt hàng</a>
-        <div class="cart-icon" id="cartIcon">
-            🛒 <span id="cartCount" class="cart-count">0</span>
-        </div>
+      <a class="nav-home active">Trang chủ</a>
+      <a class="nav-order">Đặt hàng</a>
+      <div class="cart-icon" id="cartIcon">
+        🛒 <span id="cartCount" class="cart-count">0</span>
+      </div>
     </div>
+  </div>
 </div>
 
-<div class="hero" id="heroSection">
-    <h2>Khám phá tri thức</h2>
-    <p>Hàng ngàn đầu sách hay nhất - Giao hàng nhanh chóng</p>
-</div>
-
-<div class="container">
-    <div id="homeContent">
-        <div class="category-tabs" id="categoryFilter">
-            <button class="cat-btn active" data-cat="all">📚 Tất cả</button>
-            <button class="cat-btn" data-cat="tamly">🧠 Tâm lý</button>
-            <button class="cat-btn" data-cat="trinhtham">🕵️ Trinh thám</button>
-            <button class="cat-btn" data-cat="vientuong">🚀 Viễn tưởng</button>
-            <button class="cat-btn" data-cat="khoahoc">🔬 Khoa học</button>
-            <button class="cat-btn" data-cat="truyentranh">🎨 Truyện tranh</button>
-            <button class="cat-btn" data-cat="vanhoc">🌸 Văn học</button>
-        </div>
-        <div class="books-grid" id="booksContainer"></div>
+<section class="hero" id="heroSection">
+  <div class="container hero-grid">
+    <div>
+      <h2>Đọc sách hay,<br>nuôi dưỡng tâm hồn</h2>
+      <p>Sách bản quyền, giao toàn quốc, tích điểm đổi quà. Trải nghiệm mua sắm an tâm.</p>
+      <button class="btn-cta" id="heroOrderBtn">📦 Đặt ngay</button>
     </div>
-
-    <div id="orderPage" class="order-page">
-        <h2>📦 Đặt hàng trực tuyến</h2>
-        <p>Vui lòng điền đầy đủ thông tin. Chúng tôi sẽ xác nhận đơn hàng nhanh chóng.</p>
-        <div class="form-embed">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHQF5szrYNcWvuW8xhgmVkuxRAJW58avBkq9rype5zNcVKtA/viewform?embedded=true" width="100%" height="1218" frameborder="0">Đang tải…</iframe>
-        </div>
+    <div>
+      <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=600" alt="Thư viện" style="border-radius: 28px; width: 100%;">
     </div>
+  </div>
+</section>
+
+<div class="container section" id="homeContent">
+  <div class="section-header">
+    <h3>📚 Danh sách sách</h3>
+  </div>
+  <div class="tabs" id="tabsContainer">
+    <button class="tab-btn active" data-cat="all">📖 Tất cả</button>
+    <button class="tab-btn" data-cat="tamly">🧠 Tâm lý</button>
+    <button class="tab-btn" data-cat="trinhtham">🕵️ Trinh thám</button>
+    <button class="tab-btn" data-cat="vientuong">🚀 Viễn tưởng</button>
+    <button class="tab-btn" data-cat="khoahoc">🔬 Khoa học</button>
+    <button class="tab-btn" data-cat="truyentranh">🎨 Truyện tranh</button>
+    <button class="tab-btn" data-cat="vanhoc">🌸 Văn học</button>
+  </div>
+  <div class="books-grid" id="booksGrid"></div>
 </div>
 
-<div class="footer">
-    <p>© 2025 BookVerse – Nhà sách trực tuyến. Đơn hàng được xác nhận qua email.</p>
+<div class="container" id="orderPage" style="display: none;">
+  <div class="order-page" style="display: block;">
+    <h2>📝 Đặt hàng nhanh</h2>
+    <p>Vui lòng điền thông tin chính xác. Chúng tôi sẽ gửi email xác nhận và giao hàng trong 24h.</p>
+    <!-- Thay link Google Form của bạn tại đây nếu cần -->
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHQF5szrYNcWvuW8xhgmVkuxRAJW58avBkq9rype5zNcVKtA/viewform?embedded=true" width="100%" height="800" frameborder="0">Đang tải…</iframe>
+    <p style="margin-top: 1rem; text-align: center;">📧 Mọi thông tin sẽ được bảo mật</p>
+  </div>
 </div>
+
+<footer class="footer">
+  <div class="container">
+    © 2026 BookVerse – Nhà sách trực tuyến với tông xanh & nâu | Đơn hàng được xác nhận qua email
+  </div>
+</footer>
 
 <!-- Modal giỏ hàng -->
-<div id="cartModal" class="cart-modal">
-    <div class="cart-content">
-        <h2>🛒 Giỏ hàng của bạn</h2>
-        <div id="cartItemsList"></div>
-        <div id="cartTotal" class="cart-total">Tổng: 0đ</div>
-        <div class="cart-actions">
-            <button class="btn-close-cart" id="closeCartBtn">Tiếp tục mua sắm</button>
-            <button class="btn-checkout" id="checkoutBtn">📦 Đặt hàng</button>
-        </div>
+<div id="cartModal" class="modal-cart">
+  <div class="cart-modal-content">
+    <h2>🛒 Giỏ hàng của bạn</h2>
+    <div id="cartItemsList"></div>
+    <div id="cartTotal" class="cart-total"></div>
+    <div class="cart-actions">
+      <button class="btn-close-cart" id="closeCartBtn">Tiếp tục mua sắm</button>
+      <button class="btn-checkout" id="checkoutBtn">📦 Đặt hàng</button>
     </div>
+  </div>
 </div>
 
 <!-- Modal chi tiết sách -->
-<div id="bookModal" class="modal">
-    <div class="modal-content">
-        <button class="modal-close" id="closeModalBtn">&times;</button>
-        <img id="modalImg" class="modal-img" src="" alt="Bìa sách">
-        <div>
-            <h2 id="modalTitle" class="modal-title"></h2>
-            <div id="modalAuthor" class="modal-author"></div>
-            <div id="modalPrice" class="modal-price"></div>
-        </div>
-        <div id="modalSummary" class="modal-summary"></div>
-        <button id="orderFromModalBtn" class="btn-order-modal">🛒 Thêm vào giỏ hàng</button>
+<div id="detailModal" class="modal-detail">
+  <div class="detail-content">
+    <span class="close-modal" id="closeDetailBtn">&times;</span>
+    <img id="detailImg" class="detail-img" src="" alt="">
+    <div>
+      <h2 id="detailTitle" style="color:#1e4a76;"></h2>
+      <p id="detailAuthor" style="color:#5b6e8c;"></p>
+      <p id="detailPrice" class="book-price"></p>
     </div>
+    <p id="detailSummary" style="clear:both; margin-top: 1rem;"></p>
+    <button id="detailAddCart" class="add-cart-btn" style="margin-top: 1rem;">🛒 Thêm vào giỏ</button>
+  </div>
 </div>
 
 <script>
-    // ----- Dữ liệu sách (giữ nguyên) -----
-    const booksData = [
-        { title: "Đắc Nhân Tâm", author: "Dale Carnegie", price: 89000, priceStr: "89.000đ", category: "tamly", img: "https://static.oreka.vn/800-800_167db961-4796-4d86-bcf0-be10f5747c57", summary: "Cuốn sách kinh điển về nghệ thuật giao tiếp và ứng xử." },
-        { title: "Nhà giả kim", author: "Paulo Coelho", price: 95000, priceStr: "95.000đ", category: "vanhoc", img: "https://bizweb.dktcdn.net/thumb/grande/100/363/455/products/nhagiakimnew03-e44cc6d6-6dad-4377-9d4d-744142f4f4ca.jpg?v=1768805136420", summary: "Hành trình tìm kiếm kho báu và triết lý sống." },
-        { title: "Sherlock Holmes: Án mạng Baskervilles", author: "Arthur Conan Doyle", price: 120000, priceStr: "120.000đ", category: "trinhtham", img: "https://bloganchoi.com/wp-content/uploads/2026/01/vu-an-1.jpg", summary: "Vụ án ma cũn ám ảnh gia đình Baskerville." },
-        { title: "Dune", author: "Frank Herbert", price: 180000, priceStr: "180.000đ", category: "vientuong", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy3I0OQ4fLwcayfdGElakkwFHyPeRRdm6VzA&s", summary: "Kiệt tác viễn tưởng về sa mạc Arrakis." },
-        { title: "Vũ trụ trong vỏ hạt dẻ", author: "Stephen Hawking", price: 150000, priceStr: "150.000đ", category: "khoahoc", img: "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_26112017_041133.jpg", summary: "Giải thích vũ trụ học hiện đại dễ hiểu." },
-        { title: "One Piece Tập 1", author: "Eiichiro Oda", price: 35000, priceStr: "35.000đ", category: "truyentranh", img: "https://m.media-amazon.com/images/M/MV5BMTNjNGU4NTUtYmVjMy00YjRiLTkxMWUtNzZkMDNiYjZhNmViXkEyXkFqcGc@._V1_.jpg", summary: "Hành trình trở thành Vua Hải Tặc." },
-        { title: "Sức mạnh của thói quen", author: "Charles Duhigg", price: 109000, priceStr: "109.000đ", category: "tamly", img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/197/269/products/z4105964911654-5e5a35259898ca70607286170319aa65.jpg?v=1676275362800", summary: "Cấu trúc thói quen và cách thay đổi." },
-        { title: "Án mạng trên sông Nile", author: "Agatha Christie", price: 98000, priceStr: "98.000đ", category: "trinhtham", img: "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_06352021_113536.jpg", summary: "Poirot phá án trên du thuyền." },
-        { title: "1984", author: "George Orwell", price: 112000, priceStr: "112.000đ", category: "vientuong", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCgKeYxkFj9et1G1ldGmuLDbvBZ5KK0mlMQ&s", summary: "Chế độ toàn trị và Big Brother." },
-        { title: "Tư duy nhanh và chậm", author: "Daniel Kahneman", price: 142000, priceStr: "142.000đ", category: "khoahoc", img: "https://static.oreka.vn/800-800_6754d9d9-3a0a-46e8-9493-43c71e0c9486", summary: "Hai hệ thống tư duy và ra quyết định." },
-        { title: "Death Note Tập 1", author: "Tsugumi Ohba", price: 40000, priceStr: "40.000đ", category: "truyentranh", img: "https://product.hstatic.net/200000287623/product/deathnote-1_bac1cafaa8e74352b4fec0de4832b0e4.jpg", summary: "Cuốn sổ thần chết và cuộc chiến trí tuệ." },
-        { title: "Cây cam ngọt của tôi", author: "José Mauro", price: 86000, priceStr: "86.000đ", category: "vanhoc", img: "https://static.oreka.vn/800-800_9479591a-d8e5-4b46-a7b0-e6442a07fd2f", summary: "Tuổi thơ và tình bạn đầy xúc động." }
-    ];
+  // ---------- Dữ liệu 12 cuốn sách (giữ nguyên ảnh thật) ----------
+  const booksData = [
+    { title: "Đắc Nhân Tâm", author: "Dale Carnegie", price: 89000, priceStr: "89.000đ", category: "tamly", img: "https://static.oreka.vn/800-800_167db961-4796-4d86-bcf0-be10f5747c57", summary: "Nghệ thuật giao tiếp và chinh phục lòng người – cuốn sách bán chạy nhất mọi thời đại." },
+    { title: "Nhà giả kim", author: "Paulo Coelho", price: 95000, priceStr: "95.000đ", category: "vanhoc", img: "https://bizweb.dktcdn.net/thumb/grande/100/363/455/products/nhagiakimnew03-e44cc6d6-6dad-4377-9d4d-744142f4f4ca.jpg?v=1768805136420", summary: "Hành trình tìm kiếm kho báu và định mệnh của chàng trai Santiago." },
+    { title: "Sherlock Holmes: Án mạng Baskervilles", author: "Arthur Conan Doyle", price: 120000, priceStr: "120.000đ", category: "trinhtham", img: "https://bloganchoi.com/wp-content/uploads/2026/01/vu-an-1.jpg", summary: "Vụ án ma cún ám ảnh trên vùng đồng hoang, lôi cuốn và hồi hộp." },
+    { title: "Dune", author: "Frank Herbert", price: 180000, priceStr: "180.000đ", category: "vientuong", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy3I0OQ4fLwcayfdGElakkwFHyPeRRdm6VzA&s", summary: "Kiệt tác viễn tưởng về chính trị, sinh thái và số phận trên sa mạc Arrakis." },
+    { title: "Vũ trụ trong vỏ hạt dẻ", author: "Stephen Hawking", price: 150000, priceStr: "150.000đ", category: "khoahoc", img: "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_26112017_041133.jpg", summary: "Giải thích vũ trụ, lỗ đen và lý thuyết dây một cách trực quan." },
+    { title: "One Piece Tập 1", author: "Eiichiro Oda", price: 35000, priceStr: "35.000đ", category: "truyentranh", img: "https://m.media-amazon.com/images/M/MV5BMTNjNGU4NTUtYmVjMy00YjRiLTkxMWUtNzZkMDNiYjZhNmViXkEyXkFqcGc@._V1_.jpg", summary: "Hành trình trở thành Vua Hải Tặc của Luffy bắt đầu." },
+    { title: "Sức mạnh của thói quen", author: "Charles Duhigg", price: 109000, priceStr: "109.000đ", category: "tamly", img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/197/269/products/z4105964911654-5e5a35259898ca70607286170319aa65.jpg?v=1676275362800", summary: "Cách thói quen hình thành và thay đổi để thành công." },
+    { title: "Án mạng trên sông Nile", author: "Agatha Christie", price: 98000, priceStr: "98.000đ", category: "trinhtham", img: "https://www.nxbtre.com.vn/Images/Book/nxbtre_full_06352021_113536.jpg", summary: "Poirot phá án ly kỳ trên du thuyền giữa dòng sông Nile thơ mộng." },
+    { title: "1984", author: "George Orwell", price: 112000, priceStr: "112.000đ", category: "vientuong", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCgKeYxkFj9et1G1ldGmuLDbvBZ5KK0mlMQ&s", summary: "Tác phẩm kinh điển về chế độ toàn trị, giám sát và tự do." },
+    { title: "Tư duy nhanh và chậm", author: "Daniel Kahneman", price: 142000, priceStr: "142.000đ", category: "khoahoc", img: "https://static.oreka.vn/800-800_6754d9d9-3a0a-46e8-9493-43c71e0c9486", summary: "Hai hệ thống tư duy chi phối quyết định của con người." },
+    { title: "Death Note Tập 1", author: "Tsugumi Ohba", price: 40000, priceStr: "40.000đ", category: "truyentranh", img: "https://product.hstatic.net/200000287623/product/deathnote-1_bac1cafaa8e74352b4fec0de4832b0e4.jpg", summary: "Cuộc chiến trí tuệ giữa Light và thám tử L." },
+    { title: "Cây cam ngọt của tôi", author: "José Mauro", price: 86000, priceStr: "86.000đ", category: "vanhoc", img: "https://static.oreka.vn/800-800_9479591a-d8e5-4b46-a7b0-e6442a07fd2f", summary: "Tuổi thơ dữ dội và tình bạn với cây cam – chạm đến trái tim." }
+  ];
 
-    // ----- Giỏ hàng localStorage -----
-    let cart = JSON.parse(localStorage.getItem('bookCart')) || [];
+  // ----- Giỏ hàng (lưu localStorage) -----
+  let cart = JSON.parse(localStorage.getItem('bookCartXanh')) || [];
 
-    function saveCart() {
-        localStorage.setItem('bookCart', JSON.stringify(cart));
-        updateCartUI();
-    }
+  function saveCart() {
+    localStorage.setItem('bookCartXanh', JSON.stringify(cart));
+    updateCartUI();
+  }
 
-    function updateCartCount() {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        document.getElementById('cartCount').innerText = totalItems;
-    }
+  function updateCartCount() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cartCount').innerText = totalItems;
+  }
 
-    function renderCartModal() {
-        const cartDiv = document.getElementById('cartItemsList');
-        if (cart.length === 0) {
-            cartDiv.innerHTML = '<p style="text-align:center; padding:1rem;">🛒 Giỏ hàng trống</p>';
-            document.getElementById('cartTotal').innerHTML = 'Tổng: 0đ';
-            return;
-        }
-        let html = '';
-        let total = 0;
-        cart.forEach((item, index) => {
-            const itemTotal = item.price * item.quantity;
-            total += itemTotal;
-            html += `
-                <div class="cart-item">
-                    <img class="cart-item-img" src="${item.img}" alt="${item.title}">
-                    <div class="cart-item-info">
-                        <div class="cart-item-title">${item.title}</div>
-                        <div class="cart-item-price">${item.priceStr}</div>
-                        <div class="cart-item-quantity">
-                            <button data-index="${index}" data-delta="-1">-</button>
-                            <span>${item.quantity}</span>
-                            <button data-index="${index}" data-delta="1">+</button>
-                        </div>
-                    </div>
-                    <button class="cart-item-remove" data-index="${index}">Xóa</button>
-                </div>
-            `;
-        });
-        cartDiv.innerHTML = html;
-        document.getElementById('cartTotal').innerHTML = `Tổng: ${total.toLocaleString()}đ`;
-
-        document.querySelectorAll('.cart-item-quantity button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const idx = parseInt(btn.dataset.index);
-                const delta = parseInt(btn.dataset.delta);
-                if (cart[idx]) {
-                    const newQty = cart[idx].quantity + delta;
-                    if (newQty <= 0) cart.splice(idx, 1);
-                    else cart[idx].quantity = newQty;
-                    saveCart();
-                    renderCartModal();
-                }
-            });
-        });
-        document.querySelectorAll('.cart-item-remove').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.dataset.index);
-                cart.splice(idx, 1);
-                saveCart();
-                renderCartModal();
-            });
-        });
-    }
-
-    function updateCartUI() {
-        updateCartCount();
-        const modal = document.getElementById('cartModal');
-        if (modal.style.display === 'flex') renderCartModal();
-    }
-
-    function addToCart(book) {
-        const existing = cart.find(item => item.title === book.title);
-        if (existing) existing.quantity++;
-        else cart.push({ title: book.title, price: book.price, priceStr: book.priceStr, img: book.img, quantity: 1 });
-        saveCart();
-        alert(`✅ Đã thêm "${book.title}" vào giỏ hàng!`);
-    }
-
-    // ----- Lọc + Tìm kiếm -----
-    let currentCategory = 'all';
-    let currentSearchTerm = '';
-
-    function filterBooks() {
-        let filtered = booksData;
-        if (currentCategory !== 'all') filtered = filtered.filter(b => b.category === currentCategory);
-        if (currentSearchTerm.trim() !== '') {
-            const term = currentSearchTerm.toLowerCase();
-            filtered = filtered.filter(b => b.title.toLowerCase().includes(term) || b.author.toLowerCase().includes(term));
-        }
-        return filtered;
-    }
-
-    function getCategoryName(cat) {
-        const map = { tamly:"Tâm lý", trinhtham:"Trinh thám", vientuong:"Viễn tưởng", khoahoc:"Khoa học", truyentranh:"Truyện tranh", vanhoc:"Văn học" };
-        return map[cat];
-    }
-
-    function renderBooks() {
-        const filtered = filterBooks();
-        const container = document.getElementById('booksContainer');
-        if (filtered.length === 0) {
-            container.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:3rem;">📭 Không tìm thấy sách nào.</div>';
-            return;
-        }
-        container.innerHTML = filtered.map(book => `
-            <div class="book-card" data-title="${book.title.replace(/"/g, '&quot;')}">
-                <img class="book-img" src="${book.img}" alt="${book.title}" loading="lazy" onerror="this.src='https://picsum.photos/id/1/300/260'">
-                <div class="book-info">
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.author}</div>
-                    <div class="book-price">${book.priceStr}</div>
-                    <span class="book-category">📖 ${getCategoryName(book.category)}</span>
-                    <button class="add-to-cart" data-title="${book.title}">🛒 Thêm vào giỏ</button>
-                </div>
-            </div>
-        `).join('');
-
-        document.querySelectorAll('.book-img, .book-title').forEach(el => {
-            el.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const card = el.closest('.book-card');
-                const title = card.getAttribute('data-title');
-                const book = booksData.find(b => b.title === title);
-                if (book) showModal(book);
-            });
-        });
-        document.querySelectorAll('.add-to-cart').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const title = btn.getAttribute('data-title');
-                const book = booksData.find(b => b.title === title);
-                if (book) addToCart(book);
-            });
-        });
-    }
-
-    // ----- Modal chi tiết sách -----
-    let currentModalBook = null;
-    function showModal(book) {
-        currentModalBook = book;
-        document.getElementById('modalImg').src = book.img;
-        document.getElementById('modalTitle').innerText = book.title;
-        document.getElementById('modalAuthor').innerText = book.author;
-        document.getElementById('modalPrice').innerText = book.priceStr;
-        document.getElementById('modalSummary').innerHTML = `<strong>📖 Tóm tắt:</strong> ${book.summary}`;
-        document.getElementById('bookModal').style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('bookModal').style.display = 'none'; }
-    function orderFromModal() { if (currentModalBook) addToCart(currentModalBook); closeModal(); }
-
-    // ----- Chuyển trang -----
-    function showHome() {
-        document.getElementById('homeContent').style.display = 'block';
-        document.getElementById('orderPage').style.display = 'none';
-        document.getElementById('heroSection').style.display = 'block';
-        document.querySelector('.nav-home').classList.add('active');
-        document.querySelector('.nav-order').classList.remove('active');
-    }
-    function showOrder() {
-        document.getElementById('homeContent').style.display = 'none';
-        document.getElementById('orderPage').style.display = 'block';
-        document.getElementById('heroSection').style.display = 'none';
-        document.querySelector('.nav-order').classList.add('active');
-        document.querySelector('.nav-home').classList.remove('active');
-    }
-
-    // ----- Sự kiện -----
-    document.querySelector('.nav-home').addEventListener('click', (e) => { e.preventDefault(); showHome(); });
-    document.querySelector('.nav-order').addEventListener('click', (e) => { e.preventDefault(); showOrder(); });
-
-    document.getElementById('searchBtn').addEventListener('click', () => {
-        currentSearchTerm = document.getElementById('searchInput').value;
-        renderBooks();
-    });
-    document.getElementById('searchInput').addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {
-            currentSearchTerm = e.target.value;
-            renderBooks();
-        }
-    });
-
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentCategory = btn.getAttribute('data-cat');
-            renderBooks();
-        });
-    });
-
-    const cartModal = document.getElementById('cartModal');
-    document.getElementById('cartIcon').addEventListener('click', () => { renderCartModal(); cartModal.style.display = 'flex'; });
-    document.getElementById('closeCartBtn').addEventListener('click', () => { cartModal.style.display = 'none'; });
-    document.getElementById('checkoutBtn').addEventListener('click', () => { cartModal.style.display = 'none'; showOrder(); });
-    window.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.style.display = 'none'; });
-
-    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-    document.getElementById('orderFromModalBtn').addEventListener('click', orderFromModal);
-    window.addEventListener('click', (e) => { if (e.target === document.getElementById('bookModal')) closeModal(); });
-
-    // Khởi chạy
-    showHome();
-    renderBooks();
+  function updateCartUI() {
     updateCartCount();
+    const modal = document.getElementById('cartModal');
+    if (modal.style.display === 'flex') renderCartModal();
+  }
+
+  function addToCart(book) {
+    const exist = cart.find(item => item.title === book.title);
+    if (exist) exist.quantity++;
+    else cart.push({ title: book.title, price: book.price, priceStr: book.priceStr, img: book.img, quantity: 1 });
+    saveCart();
+    alert(`✅ "${book.title}" đã thêm vào giỏ hàng!`);
+  }
+
+  function renderCartModal() {
+    const container = document.getElementById('cartItemsList');
+    if (cart.length === 0) {
+      container.innerHTML = '<p style="text-align:center">🛒 Giỏ hàng trống</p>';
+      document.getElementById('cartTotal').innerHTML = '';
+      return;
+    }
+    let html = '';
+    let total = 0;
+    cart.forEach((item, idx) => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      html += `
+        <div class="cart-item">
+          <img class="cart-item-img" src="${item.img}" alt="${item.title}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.title}</div>
+            <div class="cart-item-price">${item.priceStr}</div>
+            <div class="cart-qty">
+              <button data-idx="${idx}" data-delta="-1">−</button>
+              <span>${item.quantity}</span>
+              <button data-idx="${idx}" data-delta="1">+</button>
+              <button style="margin-left:10px; background:#fee2e2;" data-idx="${idx}" data-remove="1">Xóa</button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+    document.getElementById('cartTotal').innerHTML = `<strong>Tổng cộng: ${total.toLocaleString()}đ</strong>`;
+    // Sự kiện điều chỉnh số lượng
+    document.querySelectorAll('[data-delta]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.dataset.idx);
+        const delta = parseInt(btn.dataset.delta);
+        if (cart[idx]) {
+          const newQty = cart[idx].quantity + delta;
+          if (newQty <= 0) cart.splice(idx, 1);
+          else cart[idx].quantity = newQty;
+          saveCart();
+          renderCartModal();
+        }
+      });
+    });
+    document.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.dataset.idx);
+        cart.splice(idx, 1);
+        saveCart();
+        renderCartModal();
+      });
+    });
+  }
+
+  // ----- Tìm kiếm & lọc -----
+  let currentCategory = 'all';
+  let currentSearch = '';
+
+  function getCategoryName(cat) {
+    const map = { tamly:"Tâm lý", trinhtham:"Trinh thám", vientuong:"Viễn tưởng", khoahoc:"Khoa học", truyentranh:"Truyện tranh", vanhoc:"Văn học" };
+    return map[cat];
+  }
+
+  function filterBooks() {
+    let filtered = booksData;
+    if (currentCategory !== 'all') filtered = filtered.filter(b => b.category === currentCategory);
+    if (currentSearch.trim()) {
+      const term = currentSearch.toLowerCase();
+      filtered = filtered.filter(b => b.title.toLowerCase().includes(term) || b.author.toLowerCase().includes(term));
+    }
+    return filtered;
+  }
+
+  function renderBooks() {
+    const filtered = filterBooks();
+    const grid = document.getElementById('booksGrid');
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:2rem;">📭 Không tìm thấy sách nào</div>';
+      return;
+    }
+    grid.innerHTML = filtered.map(book => `
+      <div class="book-card" data-title="${book.title.replace(/"/g, '&quot;')}">
+        <img class="book-img" src="${book.img}" alt="${book.title}" loading="lazy">
+        <div class="book-info">
+          <span class="book-category">📖 ${getCategoryName(book.category)}</span>
+          <div class="book-title">${book.title}</div>
+          <div class="book-author">${book.author}</div>
+          <div class="book-price">${book.priceStr}</div>
+          <button class="add-cart-btn" data-title="${book.title}">🛒 Thêm vào giỏ</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Mở modal chi tiết khi click vào card (trừ nút thêm giỏ)
+    document.querySelectorAll('.book-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.classList.contains('add-cart-btn')) return;
+        const title = card.getAttribute('data-title');
+        const book = booksData.find(b => b.title === title);
+        if (book) openDetailModal(book);
+      });
+    });
+    // Thêm sự kiện nút "Thêm vào giỏ"
+    document.querySelectorAll('.add-cart-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const title = btn.getAttribute('data-title');
+        const book = booksData.find(b => b.title === title);
+        if (book) addToCart(book);
+      });
+    });
+  }
+
+  // ----- Modal chi tiết sách -----
+  let currentBookDetail = null;
+  function openDetailModal(book) {
+    currentBookDetail = book;
+    document.getElementById('detailImg').src = book.img;
+    document.getElementById('detailTitle').innerText = book.title;
+    document.getElementById('detailAuthor').innerText = book.author;
+    document.getElementById('detailPrice').innerHTML = book.priceStr;
+    document.getElementById('detailSummary').innerHTML = `<strong>📖 Tóm tắt:</strong> ${book.summary}`;
+    document.getElementById('detailModal').style.display = 'flex';
+  }
+  function closeDetailModal() { document.getElementById('detailModal').style.display = 'none'; }
+  document.getElementById('closeDetailBtn').addEventListener('click', closeDetailModal);
+  window.addEventListener('click', (e) => { if (e.target === document.getElementById('detailModal')) closeDetailModal(); });
+  document.getElementById('detailAddCart').addEventListener('click', () => { if (currentBookDetail) addToCart(currentBookDetail); closeDetailModal(); });
+
+  // ----- Chuyển đổi trang (Trang chủ / Đặt hàng) -----
+  const homeDiv = document.getElementById('homeContent');
+  const orderDiv = document.getElementById('orderPage');
+  const heroSection = document.querySelector('.hero');
+  function showHome() {
+    homeDiv.style.display = 'block';
+    orderDiv.style.display = 'none';
+    heroSection.style.display = 'block';
+    document.querySelector('.nav-home').classList.add('active');
+    document.querySelector('.nav-order').classList.remove('active');
+  }
+  function showOrder() {
+    homeDiv.style.display = 'none';
+    orderDiv.style.display = 'block';
+    heroSection.style.display = 'none';
+    document.querySelector('.nav-order').classList.add('active');
+    document.querySelector('.nav-home').classList.remove('active');
+  }
+  document.querySelector('.nav-home').addEventListener('click', (e) => { e.preventDefault(); showHome(); });
+  document.querySelector('.nav-order').addEventListener('click', (e) => { e.preventDefault(); showOrder(); });
+  document.getElementById('heroOrderBtn').addEventListener('click', () => showOrder());
+
+  // ----- Tìm kiếm -----
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    currentSearch = document.getElementById('searchInput').value;
+    renderBooks();
+  });
+  document.getElementById('searchInput').addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+      currentSearch = e.target.value;
+      renderBooks();
+    }
+  });
+
+  // ----- Lọc theo thể loại (tabs) -----
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.dataset.cat;
+      renderBooks();
+    });
+  });
+
+  // ----- Giỏ hàng modal + nút Đặt hàng chuyển sang form -----
+  const cartModal = document.getElementById('cartModal');
+  document.getElementById('cartIcon').addEventListener('click', () => { renderCartModal(); cartModal.style.display = 'flex'; });
+  document.getElementById('closeCartBtn').addEventListener('click', () => cartModal.style.display = 'none');
+  // SỰ KIỆN QUAN TRỌNG: Khi bấm nút "Đặt hàng" trong giỏ -> chuyển sang form
+  document.getElementById('checkoutBtn').addEventListener('click', () => {
+    cartModal.style.display = 'none';
+    showOrder();  // chuyển sang trang Google Form
+  });
+  window.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.style.display = 'none'; });
+
+  // Khởi tạo trang
+  renderBooks();
+  updateCartCount();
+  showHome();
 </script>
 </body>
 </html>
