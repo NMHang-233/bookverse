@@ -405,6 +405,7 @@
       display: flex;
       justify-content: flex-end;
       gap: 1rem;
+      margin-top: 1rem;
     }
 
     .btn-checkout {
@@ -417,12 +418,68 @@
       cursor: pointer;
     }
 
+    .btn-qr {
+      background: #0066b3;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .btn-close-cart {
       background: #e2e8f0;
       border: none;
       padding: 0.6rem 1.2rem;
       border-radius: 40px;
       cursor: pointer;
+    }
+
+    /* QR Payment Modal - đã bỏ phần bank-info */
+    .modal-qr {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1100;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .qr-content {
+      background: white;
+      max-width: 450px;
+      width: 90%;
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      text-align: center;
+    }
+
+    .qr-content img {
+      width: 100%;
+      max-width: 280px;
+      margin: 1rem auto;
+      border-radius: 1rem;
+    }
+
+    .btn-paid {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+      width: 100%;
     }
 
     /* Modal chi tiết sách */
@@ -493,7 +550,7 @@
   <div class="container header-inner">
     <div class="logo">
       <h1>📖 BookVerse</h1>
-      <p>Xanh & Nâu – Tri thức bền vững</p>
+      <p>Tri thức bền vững</p>
     </div>
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Tìm theo tên hoặc tác giả...">
@@ -541,7 +598,7 @@
 <div class="container" id="orderPage" style="display: none;">
   <div class="order-page" style="display: block;">
     <h2>📝 Đặt hàng nhanh</h2>
-    <p>Vui lòng điền thông tin chính xác. Chúng tôi sẽ gửi email xác nhận và giao hàng một cách nhanh chóng nhất.</p>
+    <p>Vui lòng điền thông tin chính xác. Chúng tôi sẽ nhận thông tin đặt hàng và giao hàng một cách nhanh chóng nhất.</p>
     <!-- Thay link Google Form của bạn tại đây nếu cần -->
     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHQF5szrYNcWvuW8xhgmVkuxRAJW58avBkq9rype5zNcVKtA/viewform?embedded=true" width="100%" height="800" frameborder="0">Đang tải…</iframe>
     <p style="margin-top: 1rem; text-align: center;">📧 Mọi thông tin sẽ được bảo mật</p>
@@ -550,7 +607,7 @@
 
 <footer class="footer">
   <div class="container">
-    © 2026 BookVerse – Nhà sách trực tuyến | Đơn hàng được xác nhận qua email
+    © 2026 BookVerse – Nhà sách trực tuyến với tông xanh & nâu | Đơn hàng được xác nhận qua email
   </div>
 </footer>
 
@@ -562,8 +619,22 @@
     <div id="cartTotal" class="cart-total"></div>
     <div class="cart-actions">
       <button class="btn-close-cart" id="closeCartBtn">Tiếp tục mua sắm</button>
+      <button class="btn-qr" id="qrPaymentBtn">📱 Thanh toán QR</button>
       <button class="btn-checkout" id="checkoutBtn">📦 Đặt hàng</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal thanh toán QR - ĐÃ BỎ THÔNG TIN NGÂN HÀNG -->
+<div id="qrModal" class="modal-qr">
+  <div class="qr-content">
+    <h2>💳 Quét mã QR để thanh toán</h2>
+    <div id="qrCodeContainer">
+      <img id="qrImage" src="" alt="Mã QR thanh toán">
+    </div>
+    <p style="font-size: 0.8rem; color: #5b6e8c; margin-top: 0.5rem;">Sử dụng ứng dụng ngân hàng để quét mã</p>
+    <button class="btn-paid" id="confirmPaidBtn">✅ Tôi đã thanh toán</button>
+    <button class="btn-close-cart" id="closeQrBtn" style="margin-top: 0.5rem;">Đóng</button>
   </div>
 </div>
 
@@ -583,7 +654,7 @@
 </div>
 
 <script>
-  // ---------- Dữ liệu sách với tóm tắt DÀI (5-8 câu) ----------
+  // ---------- Dữ liệu sách (tóm tắt dài 5-8 câu, giữ nguyên) ----------
   const booksData = [
     { title: "Đắc Nhân Tâm", author: "Dale Carnegie", price: 89000, priceStr: "89.000đ", category: "tamly", img: "https://static.oreka.vn/800-800_167db961-4796-4d86-bcf0-be10f5747c57", 
       summary: "Đắc Nhân Tâm là cuốn sách kinh điển nhất mọi thời đại về nghệ thuật giao tiếp và ứng xử. Dale Carnegie chỉ ra rằng thành công trong cuộc sống phụ thuộc 15% vào kiến thức chuyên môn và 85% vào kỹ năng quan hệ con người. Cuốn sách đưa ra những nguyên tắc vàng như: không chỉ trích, phê bình hay than phiền; thể hiện sự chân thành quan tâm đến người khác; luôn mỉm cười và ghi nhớ tên họ. Bạn sẽ học được cách tạo ảnh hưởng, thuyết phục người khác một cách tự nhiên, và xây dựng các mối quan hệ bền vững. Với hàng triệu bản được bán ra trên khắp thế giới, đây là cuốn sách gối đầu giường cho bất kỳ ai muốn chinh phục thành công trong công việc và cuộc sống." },
@@ -689,6 +760,48 @@
         renderCartModal();
       });
     });
+  }
+
+  // --- QR Payment ---
+  const qrModal = document.getElementById('qrModal');
+  const qrImage = document.getElementById('qrImage');
+
+  function getTotalCartAmount() {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+
+  function generateVietQRUrl(amount) {
+    const bankId = 'BIDV';
+    const accNo = '4511148821';
+    const template = 'compact2';
+    const description = `BOOKVERSE ${new Date().getTime()}`;
+    if (!amount || amount <= 0) return '';
+    return `https://img.vietqr.io/image/${bankId}-${accNo}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(description)}`;
+  }
+
+  function showQRModal() {
+    const total = getTotalCartAmount();
+    if (total === 0) {
+      alert("Giỏ hàng trống, không thể thanh toán.");
+      return;
+    }
+    const qrUrl = generateVietQRUrl(total);
+    if (qrUrl) {
+      qrImage.src = qrUrl;
+      qrModal.style.display = 'flex';
+    } else {
+      alert("Không thể tạo mã QR.");
+    }
+  }
+
+  function closeQRModal() {
+    qrModal.style.display = 'none';
+  }
+
+  function confirmPaid() {
+    closeQRModal();
+    alert("✅ Cảm ơn bạn đã thanh toán!\nĐơn hàng đang được xử lý.\nVui lòng điền thông tin giao hàng bên dưới.");
+    showOrder();
   }
 
   // ----- Tìm kiếm & lọc -----
@@ -808,15 +921,24 @@
     });
   });
 
-  // Giỏ hàng modal
+  // Giỏ hàng modal & QR
   const cartModal = document.getElementById('cartModal');
   document.getElementById('cartIcon').addEventListener('click', () => { renderCartModal(); cartModal.style.display = 'flex'; });
   document.getElementById('closeCartBtn').addEventListener('click', () => cartModal.style.display = 'none');
+  document.getElementById('qrPaymentBtn').addEventListener('click', () => {
+    cartModal.style.display = 'none';
+    showQRModal();
+  });
   document.getElementById('checkoutBtn').addEventListener('click', () => {
     cartModal.style.display = 'none';
     showOrder();
   });
   window.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.style.display = 'none'; });
+
+  // QR Modal events
+  document.getElementById('closeQrBtn').addEventListener('click', closeQRModal);
+  document.getElementById('confirmPaidBtn').addEventListener('click', confirmPaid);
+  window.addEventListener('click', (e) => { if (e.target === qrModal) closeQRModal(); });
 
   // Khởi tạo
   renderBooks();
